@@ -1,0 +1,125 @@
+layui.define(['form','jquery','layer'], function(exports) {
+    var obj = layui.form
+    var $ = jQuery = layui.jquery
+    var layer = layui.layer
+    obj.verify({
+        required: function(value, item) {
+            if (!value) {
+                var name = item.getAttribute('lay-msg')?item.getAttribute('lay-msg'):(item.placeholder?item.placeholder:'必填项')
+                return name + '不能为空!'
+            }
+        },
+        // 汉字字母数字
+        chsDash: function(value, item) {
+            if (!/^[A-Za-z0-9\u4e00-\u9fa5]+$/.test(value)) {  
+               
+                var name = item.getAttribute('lay-msg')?item.getAttribute('lay-msg'):(item.placeholder?item.placeholder:'必填项')
+                return name+' 只允许汉字数字字母!'
+            }
+        },
+        adminUser: function(value, item) {
+            if (value&&!/[0-9a-zA-Z]{6,15}/.test(value)) {
+                return '请输入正确的账号！'
+            }    
+        },
+        adminPwd: function(value, item) {
+            if (value&&!/[0-9a-zA-Z]{6,15}/.test(value)) {
+                return '请输入正确的密码！'
+            }    
+        },
+
+    })
+    // input type number 只能输入价格
+    $("input[dfilter='price']").bind("input propertychange change",function(event){
+        var val = $(this).val()
+        val = val.replace(/[^0-9.]/g,"");
+        var varArr = val.split('.')
+        if (varArr.length>1) {
+            var before = varArr[0].toString()
+            var after = '.'
+            for (var i=1;i<varArr.length;i++) {
+                after += varArr[i].toString()
+            }
+            if (after!='.') {
+                val = parseFloat(before+after.substr(0,3))
+            }
+        }
+        return $(this).val(val)
+    });
+    // 只能整数 intval
+    $("input[dfilter='intval']").bind("input propertychange change",function(event){
+        var val = $(this).val()
+        val = val.replace(/[^0-9]/g,"");
+        return $(this).val(val)
+    });
+
+    // 公共提交
+    obj.on('submit(ajax)',function(data){
+        $.post(data.form.action,data.field,function(res){
+            var go
+            if (res.code!=1001) {
+                msg =  res.msg
+            } else {
+                go = data.field.go
+                go = go?go:window.location.href
+                msg = res.msg?res.msg:'成功！'
+            }
+            var id = (new Date()).getTime()
+            var start = 3
+            layer.open({
+                title: false,
+                content: msg,
+                btn: '确定<span id="'+id+'">('+3+')</span>',
+                success: function() {
+                  var autoComfir = setInterval(function(){
+                        if (start>0) {
+                            start--
+                            $("#"+id).html('('+start+')')
+                        } else {
+                            $("#"+id).html('')
+                            $("#"+id).trigger('click')
+                        }
+                    },1000)
+                },
+                end: function(){
+                    if (go) {
+                        window.location.href = go    
+                    } else {
+                      // 如果带令牌，则强制刷新页面  
+                      if (data.field.__token__) {
+                        window.location.reload() 
+                      }
+                    }
+                }
+            })
+        })
+        return false
+    })
+
+    // 公共删除
+    $(document).on('click','.js-ajax-delete',function(e){
+        e.preventDefault()
+        data = $(this).data()
+        url = data.url?data.url:$(this).attr('href')
+        layer.confirm(data.msg?data.msg:'是否确认删除？',{},
+        function(){
+             $.post(url,{},function(res){
+                   if (res.code!=1001) {
+                        layer.msg(res.msg)
+                   } else {
+                       window.location.reload()
+                   }
+             })
+        })
+    })
+
+    $(".dyk-tips").on('focus',function(){
+        var tips = $(this).data('tips')
+        if (tips) {
+            layer.tips(tips, $(this),{
+                tips: [2, 'red']
+            });
+        }
+    })
+    exports('dykForm', obj)
+});

@@ -1,0 +1,65 @@
+{include file='public/header'}
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+      <div class="layui-col-md12">
+        <div class="layui-card">
+          <div class="layui-card-header">权限管理-新增</div>
+          <div class="layui-card-body" pad15>
+              
+            <form action="{:url('add')}" method='post'>
+            <div class="layui-form" lay-filter="">
+                 <div class="layui-form" lay-filter="">
+                       
+                <input type='hidden' name='id' class="layui-input" value='{$info.id|default=""}'/>
+              <div class="layui-form-item">
+                <label class="layui-form-label">角色名称</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="a" value="{$info.name|default=''}" lay-verify="required" autocomplete="off" placeholder="软件名称" class="layui-input">
+                </div>
+              </div>
+              <div class="layui-form-item">
+                <label class="layui-form-label">资源路径</label>
+                <div class="layui-input-inline" style="width: 500px;">
+                  <table id="table1" class="layui-table" lay-filter="table1"></table>
+                </div>
+              </div>
+
+
+              </div>
+              <input type='hidden' name='go' value="{:url('index')}"/> 
+              <div class="layui-form-item">
+                <div class="layui-input-block">
+                  <button class="layui-btn" lay-submit lay-filter="ajax">提交</button>
+                </div>
+              </div>
+            </div>
+        </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{include file='public/layui'}
+<script>
+    layui.use(['treetable'],function(){
+        var treetable = layui.treetable;
+        // 渲染表格
+        treetable.render({
+            treeColIndex: 0,
+            treeSpid: 0,
+            treeIdName: 'd_id',
+            treePidName: 'd_pid',
+            treeDefaultClose: false,
+            treeLinkage: true,
+            treeCheck: true,
+            elem: '#table1',
+            url: '{:url("menu")}',
+            cols: [[
+                {field: 'id', title: 'id',width:200},
+                {field: 'name', title: '权限名称'},
+                {checkbox: true}
+            ]]
+        });
+    })
+</script>
+{include file='public/footer'}

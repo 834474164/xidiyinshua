@@ -1,0 +1,72 @@
+{include file='public/header'}
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+      <div class="layui-col-md12">
+        <div class="layui-card">
+          <div class="layui-card-header">权限管理-新增</div>
+          <div class="layui-card-body" pad15>
+              
+            <form action="{:url('add')}" method='post'>
+            <div class="layui-form" lay-filter="">
+                 <div class="layui-form" lay-filter="">
+                       
+                <input type='hidden' name='id' class="layui-input" value='{$info.id|default=""}'/>
+              <div class="layui-form-item">
+                <label class="layui-form-label">菜单名称</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="a" value="{$info.name|default=''}" lay-verify="required" autocomplete="off" placeholder="软件名称" class="layui-input">
+                </div>
+              </div>
+              <div class="layui-form-item">
+                <label class="layui-form-label">资源路径</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="b" value="{$info.path|default=''}" lay-verify="required" autocomplete="off" placeholder="资源路径" class="layui-input">
+                </div>
+              </div>
+              
+              <div class="layui-form-item">
+                <label class="layui-form-label">上级栏目</label>
+                <div class="layui-input-inline">
+                  <select name="e" lay-verify="required">
+                        <option  value="0">作为顶级栏目</option>
+                        {foreach name="tree" item='vo'}
+                        <option {if condition="$vo.disable eq 1"}disabled{/if} {if condition="isset($info.id) and $info.pid eq $vo.id"}selected{/if}  value="{$vo.id}">{$vo.layer_targ}{$vo.name}</option>
+                        {/foreach}
+                  </select>
+                </div>
+              </div>
+
+              <div class="layui-form-item">
+                <label class="layui-form-label">是否ajax</label>
+                <div class="layui-input-inline">
+                    <input type="checkbox" {:setDefSign('checked',$info,'is_ajax','是')} name="c" value='1' lay-skin="switch" lay-text="是|否">
+                </div>
+              </div>
+              
+              <div class="layui-form-item">
+                <label class="layui-form-label">显示为菜单</label>
+                <div class="layui-input-inline">
+                    <input type="checkbox" {:setDefSign('checked',$info,'show','是')} name="d" value='1' lay-skin="switch" lay-text="是|否">
+                </div>
+              </div>
+
+
+              </div>
+              <input type='hidden' name='go' value="{:url('index')}"/> 
+              <div class="layui-form-item">
+                <div class="layui-input-block">
+                  <button class="layui-btn" lay-submit lay-filter="ajax">提交</button>
+                </div>
+              </div>
+            </div>
+        </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+ 
+
+{include file='public/layui'}
+{include file='public/footer'}

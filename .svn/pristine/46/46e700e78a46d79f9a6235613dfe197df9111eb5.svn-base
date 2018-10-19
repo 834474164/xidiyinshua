@@ -1,0 +1,5 @@
+layui.config({
+    base: '/static/layui/extend/' //扩展根目录
+  }).extend({
+    treetable: 'treetable-lay/treetable'
+});

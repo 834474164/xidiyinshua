@@ -1,0 +1,53 @@
+{include file='public/header'}
+<div class="layui-fluid">
+        <div class="layui-row layui-col-space15">
+          <div class="layui-col-md12">
+            <div class="layui-card">
+              <div class="layui-card-header">设置我的资料</div>
+              <div class="layui-card-body" pad15>
+                <form action="" method='post'>
+                <div class="layui-form" lay-filter="">
+                  <div class="layui-form-item">
+                    <label class="layui-form-label">昵称</label>
+                    <div class="layui-input-inline">
+                      <input type="text" name="a" value="{$info.nickname|default=''}" lay-verify="required" autocomplete="off" placeholder="昵称" class="layui-input">
+                    </div>
+                  </div>
+                  <div class="layui-form-item">
+                    <label class="layui-form-label">LOGO</label>
+                    <div class="layui-input-inline"  style="width: auto;">
+                         <input type='hidden' name='piclist' value=''/>
+                         <div id='img-preview'>
+                                
+                         </div>   
+                    </div>
+                 
+                      <button type="button" class="layui-btn layui-btn-primary" id="LAY_avatarUpload">
+                        <i class="layui-icon">&#xe67c;</i>上传图片
+                      </button>
+                 </div>
+                  <div class="layui-form-item">
+                    <label class="layui-form-label">手机</label>
+                    <div class="layui-input-inline">
+                      <input type="text" name="b" value="{$info.phone|default=''}" lay-verify="phone" autocomplete="off" class="layui-input">
+                    </div>
+                  </div>
+                  
+                  <div class="layui-form-item">
+                    <div class="layui-input-block">
+                      <button class="layui-btn" lay-submit lay-filter="ajax">确认修改</button>
+                    </div>
+                  </div>
+                </div>
+            </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <input type="hidden" id='config' value='{$config|default=''}'>
+     
+
+{include file='public/layui'}
+
+{include file='public/footer'}

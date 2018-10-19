@@ -1,0 +1,39 @@
+{include file='public/header'}
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+    <legend>面板</legend>
+</fieldset>
+<div style="padding: 20px; background-color: #F2F2F2;">
+    <div class="layui-row layui-col-space15 flex">
+        <div class="layui-col-md6">
+            <div class="layui-card">
+                <div class="layui-card-header">系统信息</div>
+                <div class="layui-card-body">
+                    服务器：<?php echo php_uname();?><br/>
+                    web服务器：<?php echo $_SERVER['SERVER_SOFTWARE'];?><br/>
+                    php版本：<?php echo PHP_VERSION ;?><br/>
+                    mysql版本：{$mysqlv}
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md6">
+            <div class="layui-card">
+                <div class="layui-card-header">开发框架信息</div>
+                <div class="layui-card-body">
+                    后端框架：thinkphp5.1<br>
+                    前端框架：layui2.4.2<br>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="layui-col-md12">
+        <div class="layui-card">
+            <div class="layui-card-header">开发团队</div>
+            <div class="layui-card-body">
+                联派网络定制组-A组<br/>
+                技术支持：<a target="_blank" style="color:#00dfb9" href="http://www.linkseo.cn/">联派网络</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{include file='public/footer'}

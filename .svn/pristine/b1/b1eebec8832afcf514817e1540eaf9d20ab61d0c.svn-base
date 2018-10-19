@@ -1,0 +1,23 @@
+body {
+  background: url(/static/img/banner.jpg) no-repeat;
+  background-color: #174660;
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center center;
+  background-color: black;
+}
+
+body .main {
+  width: 300px;
+  padding: 300px;
+  margin: 0 auto;
+  color: white;
+}
+
+body .main a {
+  color: white;
+}
+
+body .main h1 {
+  text-align: center;
+}

@@ -1,0 +1,38 @@
+{include file='public/header'}
+<form class="layui-form search">
+    <div class="layui-inline">
+        <label class="layui-form-label"></label>
+        <div class="layui-input-block">
+            <input class="layui-btn layui-btn-normal" value="搜索" type="submit">
+            <a href="/webman/role/index" class="layui-btn layui-btn-normal">重置</a>
+            <a href="{:url('add')}" class="layui-btn layui-btn-normal">新增</a>
+        </div>
+    </div>
+    <div style="clear:both"></div>
+
+</form>
+<table id="table1" class="layui-table" lay-filter="table1"></table>
+{include file='public/layui'}
+<script>
+    layui.use(['treetable'],function(){
+        var treetable = layui.treetable;
+
+        // 渲染表格
+        treetable.render({
+            treeColIndex: 0,
+            treeSpid: 0,
+            treeIdName: 'd_id',
+            treePidName: 'd_pid',
+            treeDefaultClose: false,
+            treeLinkage: true,
+            elem: '#table1',
+            url: '',
+            cols: [[
+                {field: 'id', title: 'id'},
+                {field: 'name', title: '权限名称'},
+                {field: 'menus', title: '资源名称'}
+            ]]
+        });
+    })
+</script>
+{include file='public/footer'}

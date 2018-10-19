@@ -1,0 +1,54 @@
+{include file='public/header'}
+
+<form class="layui-form search">
+    {if condition="isset($search)"}
+    {foreach name="$search" key="ko" item="vo"}
+    <div class="layui-inline">
+        <label class="layui-form-label">{$vo.name}</label>
+        <div style="{$vo.style|default=''}"  class="layui-input-block">
+            {switch vo.type}
+            {case 1}
+            <select name="eq[{$ko}]"  class="layui-input">
+                <option value="">请选择</option>
+                {foreach name="$vo.val" item="sv" key="sk"}
+                {if condition="isset($param.eq[$ko]) and $param.eq[$ko] eq $sk"}
+                <option selected value="{$sk}">{$sv}</option>
+                {else/}
+                <option value="{$sk}">{$sv}</option>
+                {/if}
+                {/foreach}
+            </select>
+            {/case}
+            {default/}
+            <input name="like[{$ko}]" class="layui-input" value="{$param.like[$ko]|default=''}" type="text">
+            {/switch}
+
+        </div>
+    </div>
+    {/foreach}
+    {/if}
+    <div class="layui-inline">
+        <label class="layui-form-label"></label>
+        <div class="layui-input-block">
+            {if condition="isset($search)"}
+            <input class="layui-btn layui-btn-normal" value="搜索" type="submit">
+            <a href="{:url('index')}" class="layui-btn layui-btn-normal">重置</a>
+            {/if}
+            <a href="{:url('add')}" class="layui-btn layui-btn-normal">新增</a>
+        </div>
+    </div>
+    <div style="clear:both"></div>
+
+</form>
+
+{include file='public/layui'}
+<table class="layui-table" lay-data="{height: 'full-100', cellMinWidth: 180, page: true, limit:30, url:'{$url}'}">
+    <thead>
+    <tr>
+        {foreach name="field" item="vo" key="ko"}
+        <th lay-data="{field:'{$ko}', width:{$vo.width|default=80}}">{$vo.name}</th>
+        {/foreach}
+    </tr>
+    </thead>
+</table>
+{include file='public/footer'}

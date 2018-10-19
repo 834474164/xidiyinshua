@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=640px,user-scalable=no">
+    <link rel="stylesheet" href="/static/layui/css/layui.css">
+    <link rel="stylesheet" href="/static/css/login.min.css">
+    <meta charset="utf-8"/>
+</head>
+<body>
+<div class="main">
+    <form class="layui-form" action="{:url('doLogin')}">
+        <div class="layui-form-item">
+            <h1>daoAdmin后台管理系统</h1>
+        </div>
+        <div class="layui-form-item">
+            <input value="webman" type="text" name="user" required="" lay-verify="required|adminUser" placeholder="请输入账号" autocomplete="off" class="layui-input">
+        </div>
+        <div class="layui-form-item dyk-clearable">
+            <input value="admin123789" type="password" name="pwd" required="" lay-verify="required|adminPwd" placeholder="请输入密码" autocomplete="off" class="layui-input ">
+        </div>
+        <div class="layui-form-item">
+            {:token()}
+            <button class="layui-btn layui-btn-fluid" lay-submit lay-filter='ajax'>登录</button>
+            <input type="hidden" name="go" value="{:url('webman/index/index')}"/>    
+        </div>
+
+        <div class="layui-form-item">
+            <a href='http://www.linkseo.cn' target="_blank">联派网络提供技术支持</a>
+        </div>
+    </form>
+</div>
+<script src="/static/layui/layui.js"></script>
+<script src="/static/layui/layui.init.js"></script>
+<script>
+    layui.use(['dykForm'],function(){})
+</script>
+</body>
+</html>

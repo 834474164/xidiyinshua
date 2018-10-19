@@ -1,0 +1,152 @@
+/*公共属性*/
+.flex {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+}
+
+body {
+    .index {
+        .layui-body {
+            overflow: hidden;
+            background: #f2f2f2;
+        }
+        .tab-box {
+            &>.layui-icon {
+                color: white;
+                font-size: 20px;
+                z-index: 999;
+                background: #23262e;
+                padding-top: 18px;
+                height: 42px;
+                cursor: pointer;
+            }
+            $ttLeftPosi: 240px;
+            $ttleftWidth: 60%;
+            .layui-icon-right {
+                left: $ttleftWidth;
+                margin-left: $ttLeftPosi;
+            }
+            .task-tab {  
+                height: 60px;
+                margin-left: $ttLeftPosi;
+                width: $ttleftWidth;
+                overflow: hidden; 
+                position: relative;
+                
+                #task-list {
+                    left: 0;
+                    white-space: nowrap;
+                    padding: 0;
+                    li {
+                        .layui-icon {
+                            position: absolute;
+                            top: -14px;
+                            right: 0;
+                            cursor: pointer;
+                            display: none;
+                        }
+                        &:hover .layui-icon {
+                            display: block;
+                        }
+                    }
+                    .tab-active {
+                        a {
+                            color: white;
+                        }
+                        
+                    }
+                }
+            }
+        }
+       
+        iframe {
+            width: 98%;
+            height: 100%;
+            margin: 0 1%;
+        }
+    }
+    .iframe {
+        .search {
+            .layui-form-label {
+                width: auto;
+            }
+            .layui-inline {
+                float: left;
+                margin: 10px 0;
+                .layui-input-block {
+                    float:left;
+                    margin: 0;
+                }
+            }
+        }
+        .flex {
+            margin-bottom: 15px;
+            .layui-card {
+                height: 100%;
+            }
+        }
+        #img-preview {
+            transition: 0.5s;
+            .img-box {
+                position: relative;
+                &:hover .layui-icon-delete{
+                    display: block;
+                }
+                img {
+                    max-width: 100px;
+                    min-height: 100px;
+                }
+                .layui-icon-delete {
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    font-size: 30px;
+                    background: white;
+                    display: none;
+                    transition: 0.5s;
+                }
+            }
+        }
+    }
+    .laytable-cell-1-avatar {
+        height: auto;
+        .img {
+            max-height: 50px;
+        }
+    }
+    .order-info {
+        .layui-row {
+            margin: 10px 0;
+        }
+        .goods-info {
+            img {
+                max-height: 50px;
+                max-width: 100%;
+            }
+            .layui-col-md4 {
+                
+                &:nth-child(1) div{
+                    text-align: center;
+                }
+                &:nth-child(2) div{
+                    width: 80%;
+                }
+            }
+        }
+    }
+    .edit-table {
+        td {
+            width: 50%;
+            height: 1px;
+            .layui-form-item {
+                display: flex;
+                .layui-input-inline {
+                    width: 100%;
+                }
+            }
+        }
+    }
+
+}
+

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/static/layui/css/layui.css">
+    <style>
+        .main {
+  position: relative;
+  margin: 50px;
+}
+
+.main .box {
+  width: 200px;
+  height: 200px;
+  transition: .2s;
+  color: white;
+  text-align: center;
+  line-height: 200px;
+}
+
+.main .box.dragging {
+  transition: 0s;
+}
+
+.main .box:hover {
+  font-size: 30px;
+}
+
+.main .box.hover {
+  font-size: 100px;
+}
+
+.lay-open {
+  background: black;
+  color: red;
+  padding: 10px;
+}
+
+    </style>
+</head>
+<body>
+<div class='main'>
+    {foreach name='data' item='vo'}
+    <div class='box'>
+       id:{$vo.id}----pid:{$vo.pid}
+    </div>
+    {/foreach}
+</div>
+    <script src="/static/layui/layui.js"></script>
+    <script src="/static/layui/layui.init.js"></script>
+    <script>
+            var maxBox = 6
+            layui.use(['gridly','jquery','layer'],function(){
+                var gridly = layui.gridly
+                var layer = layui.layer
+                var $ = jQuery = layui.jquery
+                $('.main').gridly({
+                        base: 0, // px 
+                        gutter: 20, // px
+                        columns: 12*maxBox
+                });
+                $('.box').each(function(){
+                    $(this).css('background',"rgb("+parseInt(Math.random()*(0,255))+","+parseInt(Math.random()*(0,255))+","+parseInt(Math.random()*(0,255))+")")
+                })
+            })
+        </script>
+</body>
+</html>

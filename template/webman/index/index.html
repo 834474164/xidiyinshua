@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>DaoCms</title>
+  <link rel="stylesheet" href="/static/layui/css/layui.css">
+  <link rel="stylesheet" href="/static/css/style.min.css">
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin index">
+  <div class="layui-header">
+    <div class="layui-logo">后台管理系统</div>
+    <!-- 头部区域（可配合layui已有的水平导航） -->
+    <div class='tab-box '>
+            <i class="layui-icon layui-icon-left layui-layout-left"></i>
+            <div class='task-tab'>
+                    <ul id='task-list' class="layui-nav layui-layout-left">
+
+                    </ul>    
+            </div>
+            <i class="layui-icon layui-icon-right layui-layout-left"></i>
+    </div>
+
+    <ul class="layui-nav layui-layout-right">
+      <li class="layui-nav-item">
+        <a href="javascript:;">
+          <img src="{$admin.avatar.path|default=''}" class="layui-nav-img">
+          {$admin.nickname}
+        </a>
+        {if condition="$admin.id eq 1"}  
+        <dl class="layui-nav-child" id="top-nav">
+          
+          <dd><a data-url='/webman/index/adminInfo' data-title='个人资料' data-refresh="1">基本资料</a></dd>
+          <dd><a data-url='/webman/index/editPwd' data-title='修改密码' data-refresh="1"   href="javascript:;">修改密码</a></dd>
+        
+        </dl>
+        {/if}
+      </li>
+      <li class="layui-nav-item"><a href="{:url('webman/login/logout')}">退出登录</a></li>
+    </ul>
+  </div>
+  
+  <div class="layui-side layui-bg-black">
+    <div class="layui-side-scroll">
+      <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+      <ul class="layui-nav layui-nav-tree" id="menu"  lay-filter="left-nav">
+      </ul>
+    </div>
+  </div>
+  
+  <div class="layui-body" id="content">
+    <!-- 内容主体区域 -->    
+  </div>
+  
+  <div class="layui-footer">
+    <!-- 底部固定区域 -->
+    <a target="_blank" href="http://www.linkseo.cn">© http://www.linkseo.cn - 本系统由武汉联派网络开发</a>
+  </div>
+</div>
+<script src="/static/layui/layui.js"></script>
+<script src="/static/layui/layui.init.js"></script>
+<script src="/static/js/jquery.js"></script>
+<script>
+    ;(function(){
+        $.post('',{},function(res){
+            var html = "";
+            $.each(res.data,function(key,item){
+                html += '<li class="layui-nav-item layui-nav-itemed"><a>'+item.name+'</a>'+buildNode(item.children)+'</li>'
+            })
+            $('#menu').html(html)
+            runLayui()
+        })
+        function buildNode(data)
+        {
+            if (!data) {
+                return ''
+            }
+            var html = '<dl class="layui-nav-child">'
+            $.each(data,function(key,item){
+                html += '<dd><a data-url="'+item.path+'" data-title="'+item.name+'" data-refresh="1"   href="javascript:;">'+item.name+'</a>'+buildNode(item.children)+'</dd>'
+            })
+            html = html+'</dl>'
+            return html;
+
+        }
+        function runLayui() {
+            layui.use(['element','jquery','md5'], function(){
+                var element = layui.element;
+                var md5 = layui.md5;
+                var $ = jQuery = layui.jquery
+                // 菜单无限分类树
+                // 加上MD5标识，方便同步
+                $('#menu a').each(function(){
+                    var data = $(this).data()
+                    if (data.url) {
+                        $(this).attr('id','menu-'+md5(data.url))
+                    }
+                })
+                element.on('nav(left-nav)', function(e){
+                    var data = e.data()
+                    if (data && data.url) {
+                        data.id = md5(data.url)
+                        navTab(data)
+                    }
+                });
+                // 打开默认页
+                navTab()
+
+                $(document).on('click','#task-list li',function(){
+                    navTab($(this).data())
+                })
+
+                $(document).on('click','#top-nav a',function(){
+                    var data = $(this).data()
+                    data.id = md5(data.url)
+                    navTab(data)
+                })
+
+
+                $('.tab-box .layui-icon-right').on('click',function(){
+                    var curTabIndex = $('#task-list li').index($('.layui-this'))
+                    var total = $('#task-list li').length
+                    if(curTabIndex<0) {
+                        return
+                    }
+                    if (curTabIndex==total-1)  {
+                        return
+                    }
+                    navTab($('#task-list li').eq(curTabIndex+1).data())
+                })
+
+                $('.tab-box .layui-icon-left').on('click',function(){
+                    var curTabIndex = $('#task-list li').index($('.layui-this'))
+                    var total = $('#task-list li').length
+                    if(curTabIndex<=0) {
+                        return
+                    }
+                    navTab($('#task-list li').eq(curTabIndex-1).data())
+                })
+
+                $(document).on('click','#task-list li .layui-icon-close',function(e){
+                    e.stopPropagation()
+                    var _this = $(this).parent('li')
+                    var curTabIndex = $('#task-list li').index(_this)
+                    var total = $('#task-list li').length
+                    _this.remove()
+
+                    if (total == 1) {
+                        // 打开默认页
+                        navTab()
+                        return
+                    }
+                    curTabIndex = curTabIndex>0?curTabIndex-1:0
+                    $('#'+_this.data('id')).remove();
+                    navTab($('#task-list li').eq(curTabIndex).data())
+                })
+
+
+                // 生成标签
+                function navTab(data) {
+                    var taskLen = $('#task-list li').length
+                    if (!data&&taskLen==0) {
+                        data = {
+                            'id':'default',
+                            'url':'{:url("webman/index/welcome")}',
+                            'title': '控制面板'
+                        }
+                    }
+                    var existTab = 0
+                    $('#task-list li').removeClass('layui-this')
+                    $('#content iframe').hide()
+                    $('#task-list li').each(function(){
+                        var thisData = $(this).data()
+                        if (thisData.id==data.id) {
+                            $(this).addClass('layui-this')
+                            var tlLeft = parseInt($('#task-list').css('left'))
+                            var positionLeft = $(this).position().left+ tlLeft
+                            var selfWidth = $(this).width()
+                            var overRight = positionLeft+selfWidth-$('.task-tab').width()
+                            if (positionLeft<0) {
+                                $('#task-list').animate({left:0})
+                            } else if (overRight>0) {
+                                $('#task-list').animate({left:tlLeft-overRight})
+                            }
+                            existTab = 1
+                        }
+                    })
+                    if (existTab==0) {
+                        $('#task-list').append('<li data-id="'+data.id+'" class="layui-nav-item layui-this"><a href="javacsript:">'+data.title+'</a><i title="关闭" class="layui-icon layui-icon-close"><i></li>')
+                        var tlWidth = $('#task-list').width()
+                        var ttWidth = $('.task-tab').width()
+                        var toLeft = 0-tlWidth+ttWidth
+                        toLeft = toLeft<0?toLeft:0
+                        $('#task-list').animate({left:toLeft})
+                        $('#content').append('<iframe id="'+data.id+'" src="'+data.url+'" frameborder="0" border="0"></iframe>')
+                    }
+                    if (data.refresh) {
+                        var iframeUri = $('#'+data.id).attr('src')
+                        $('#'+data.id).attr('src','')
+                        $('#'+data.id).attr('src',iframeUri)
+                    }
+                    $('#'+data.id).show()
+
+                    // 左侧同步
+                    $('#menu a').parent('dd').removeClass('layui-this')
+                    $('#menu-'+data.id).parent('dd').addClass('layui-this')
+                }
+            });
+        }
+    })();
+
+
+
+</script>
+</body>
+</html>

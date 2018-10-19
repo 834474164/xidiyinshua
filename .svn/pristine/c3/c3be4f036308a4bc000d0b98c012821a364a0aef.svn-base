@@ -1,0 +1,21 @@
+body {
+    background: url(/static/img/banner.jpg) no-repeat;
+    background-color: #174660;
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center center;
+    background-color: black;
+    .main {
+        width: 300px;
+        padding: 300px;
+        margin: 0 auto;
+        color: white;
+        a {
+            color: white;
+        }
+        h1 {
+            text-align: center;
+        }
+    }
+}
+

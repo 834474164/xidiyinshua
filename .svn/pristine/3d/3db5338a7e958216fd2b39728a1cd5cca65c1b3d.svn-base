@@ -1,0 +1,49 @@
+{include file='public/header'}
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">设置系统资料</div>
+                <div class="layui-card-body" pad15>
+                    <form action="" method='post'>
+                        <div class="layui-form" lay-filter="">
+                            {foreach name="cfg" item="vo"}
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">{$vo.title}</label>
+                                <div class="layui-input-inline">
+                                    {if condition="$vo.type eq 0"}
+                                    <input type="text" name="{$vo.key}" value="{$vo.value|default=''}"  autocomplete="off" placeholder="{$vo.title}" class="layui-input" style="width:500px">
+                                    {else/}
+                                    <div class="layui-input-inline"  style="width: auto;">
+                                        <input type='hidden' name='piclist' value=''/>
+                                        <div id='img-preview'>
+
+                                        </div>
+                                    </div>
+
+                                    <button type="button" class="layui-btn layui-btn-primary" id="LAY_avatarUpload">
+                                        <i class="layui-icon">&#xe67c;</i>上传图片
+                                    </button>
+                                    <input type="hidden" id='config' value='{$config|default=''}'>
+                                    {/if}
+                                </div>
+                            </div>
+                            {/foreach}
+                            <div class="layui-form-item">
+                                <div class="layui-input-block">
+                                    <button class="layui-btn" lay-submit lay-filter="ajax">确认修改</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{include file='public/layui'}
+
+{include file='public/footer'}

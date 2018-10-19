@@ -1,0 +1,72 @@
+<script src="/static/layui/layui.js"></script>
+<script src="/static/layui/layui.init.js"></script>
+<script>
+        layui.use(['upload','layer','jquery','gridly','dykForm','table'], function(){
+            var upload = layui.upload
+            var layer = layui.layer
+            var $ = jQuery = layui.jquery
+            var gridly = layui.gridly
+            var table = layui.table
+            
+            //图片上传
+            ;(function(){
+                var config = $('#config').val()
+                var maxImg = 1
+                
+                if (config) {
+                    config = JSON.parse(config)
+                    maxImg = config.maxImg?config.maxImg:1
+                    if (config.imgList) {
+                        setTimeout(function(){
+
+						renderImg(config.imgList) 
+						},0) 
+                    }
+                }
+
+                 $('#img-preview').gridly({
+                    base: 0, // px 
+                    gutter: 20, // px
+                    columns: 12*maxImg
+                });
+                
+    
+                var uploadInst = upload.render({
+                elem: '#LAY_avatarUpload' //绑定元素
+                ,url: "{:url('webman/Asset/webuploader')}" //上传接口
+                ,done: function(res){
+                //上传完毕回调
+                    if (res.code != 1001) {
+                        layer.msg(res.msg)   
+                    } else {
+                        renderImg(res.data)
+                    }
+                }
+                ,error: function(){
+                //请求异常回调
+                    layer.msg('上传接口异常,请重试!')    
+                }
+                })
+            function renderImg(data) {
+                if ($('#img-preview .img-box').length>=maxImg) {
+                    $('#img-preview .img-box:eq(0)').remove()
+                }
+                $('#img-preview').append("<div class='img-box'><i class='layui-icon layui-icon-delete'></i><img data-md5='"+data.hash+"' data-path='"+data.path+"' src='"+data.path+"'/></div>")
+                reLayout()
+            }
+            function reLayout() {
+                $('#img-preview').width(($('#img-preview img').length)*120)
+                $('#img-preview').gridly('layout')
+                var imgList = []
+                $('#img-preview img').each(function(){
+                    imgList.push($(this).data('md5'))
+                })
+                $('input[name="piclist"]').val(imgList.join(','))
+            }
+            $(document).on('click','#img-preview .layui-icon-delete',function(){
+                $(this).parent('.img-box').remove()
+                reLayout()
+            })   
+            })() 
+        });
+    </script>
